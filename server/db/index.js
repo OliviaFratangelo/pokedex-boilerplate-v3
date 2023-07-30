@@ -1,5 +1,4 @@
 const { db, Sequelize } = require("./db");
-
 // require each of your models
 const Trainer = db.define("Trainer", {
   firstName: {

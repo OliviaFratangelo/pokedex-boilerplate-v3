@@ -2,6 +2,7 @@ const PORT = 1337;
 const server = require("./index");
 const { db } = require("./db");
 
+
 const init = async () => {
   try {
     await db.sync();
