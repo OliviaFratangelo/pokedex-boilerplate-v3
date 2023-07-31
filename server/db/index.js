@@ -36,7 +36,6 @@ const Pokemon = db.define("Pokemon", {
 
 // place your associations here!
 
-Trainer.hasMany(Pokemon);
 Pokemon.belongsTo(Trainer, { foreignKey: "TrainerId" });
 
 // export your models below

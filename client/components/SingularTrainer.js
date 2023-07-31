@@ -1,16 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const SingularTrainer = ({ trainer }) => {
-    const { firstName, lastName, team, image } = pokemon;
-    
-    return (
-        <div>
-            <h2>{firstName} {lastName}</h2>
-            <p>Team: {team}</p>
-            <p>Pokemon: {pokemon}</p>
-            <img src={image} alt={name} />
-        </div>
-    );
-};
+export default function Trainer() {
+  const [trainer, setTrainer] = useState(null);
+  const { id } = useParams();
 
-export default SingularTrainer;
+  useEffect(() => {
+    async function fetchTrainerDetails() {
+      try {
+        const { data } = await axios.get(`/api/trainer/${id}`);
+        setTrainer(data);
+      } catch (error) {
+        console.error("Error fetching trainer:", error);
+        setTrainer(null);
+      }
+    }
+
+    fetchTrainerDetails();
+  }, [id]);
+
+  return (
+    <div>
+      <h2>{trainer.firstName}</h2>
+      <img src={trainer.image} />
+      <ul>
+        {trainer.Pokemons.map((pokemon) => (
+          <ul key={pokemon.id}>
+            <li>
+              {pokemon.name} - {pokemon.type} - {pokemon.trainer}
+            </li>
+            <li>
+              <img src={pokemon.image} />
+            </li>
+          </ul>
+        ))}
+      </ul>
+    </div>
+  );
+}

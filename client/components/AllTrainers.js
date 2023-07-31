@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-const AllTrainers = () => {
-    const [trainerList, setTrainerList] = useState([]);
+export default function Trainers() {
+    const [trainers, setTrainers] = useState([]);
 
     useEffect(() => {
-        axios.get("/api/trainer"), then((response) => {
-            setTrainerList(response.data);
-        });
-}, []);
+        async function fetchTrainers() {
+            const { data } = await axios.get("/api/trainer");
+            setTrainers(data);
+            }
 
-return (
-    <div>
-        <h2>All Trainers</h2>
-        <ul>
-            {trainerListList.map((trainer) => (
-                <li key = {trainer.id}>
-                    <img src={trainer.image} alt = {trainer.firstName} />
-                    {trainer.firstName} {trainer.lastName}
-                </li>
-            ))}
-        </ul>
-    </div>
-);
- };
+            fetchTrainers();
+    }, []);
 
- export default AllTrainers;
-
-
+    return (
+        <>
+            <h1>Trainers list</h1>
+            <ul id="main">
+                {trainers.map((trainer) => (
+                    <li key={trainer.id}>
+                        <Link to={`/trainer/${trainer.id}`}>{trainer.firstName} {trainer.lastName} </Link> <br />
+                    </li>
+                ))}
+            </ul>
+        </>
+    );
+}
